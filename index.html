@@ -8,18 +8,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --primary: #ef4444;
             --primary-dark: #dc2626;
             --success: #10b981;
             --warning: #f59e0b;
+            --secondary: #8b5cf6;
             --bg-dark: #0f0f23;
             --bg-card: rgba(255, 255, 255, 0.05);
             --text: #fff;
             --text-muted: #94a3b8;
             --border: rgba(255, 255, 255, 0.1);
-            --glow: rgba(239, 68, 68, 0.5);
         }
 
         * {
@@ -70,30 +71,16 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 2rem;
         }
 
-        .hero {
-            text-align: center;
-            padding: 2rem 0;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-        }
-
-        .hero p {
-            color: var(--text-muted);
-        }
-
-        .stats-grid {
+        .stats-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1.5rem;
-            margin: 2rem 0;
+            margin-bottom: 2rem;
         }
 
         .stat-card {
@@ -101,24 +88,48 @@
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 1.5rem;
-            text-align: center;
         }
 
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
         }
 
-        .stat-value.danger {
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .stat-icon.danger {
+            background: rgba(239, 68, 68, 0.2);
             color: var(--primary);
         }
 
-        .stat-value.warning {
+        .stat-icon.warning {
+            background: rgba(245, 158, 11, 0.2);
             color: var(--warning);
         }
 
-        .stat-value.success {
+        .stat-icon.success {
+            background: rgba(16, 185, 129, 0.2);
             color: var(--success);
+        }
+
+        .stat-icon.info {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--secondary);
+        }
+
+        .stat-value {
+            font-size: 2.25rem;
+            font-weight: 800;
         }
 
         .stat-label {
@@ -126,16 +137,22 @@
             font-size: 0.9rem;
         }
 
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2rem;
+        }
+
         .card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
         }
 
         .card h3 {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -145,48 +162,89 @@
             color: var(--primary);
         }
 
+        .chart-container {
+            height: 200px;
+            margin-bottom: 1.5rem;
+        }
+
         .order-list {
-            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
         .order-item {
             display: flex;
             align-items: center;
             gap: 1rem;
-            padding: 1rem;
+            padding: 1.25rem;
             border: 1px solid var(--border);
-            border-radius: 12px;
-            margin-bottom: 0.75rem;
+            border-radius: 14px;
+            transition: all 0.3s;
+        }
+
+        .order-item:hover {
+            border-color: var(--primary);
         }
 
         .order-item.high-risk {
-            border-color: var(--primary);
+            border-left: 4px solid var(--primary);
             background: rgba(239, 68, 68, 0.05);
         }
 
         .order-item.medium-risk {
-            border-color: var(--warning);
+            border-left: 4px solid var(--warning);
             background: rgba(245, 158, 11, 0.05);
         }
 
-        .risk-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
+        .order-item.low-risk {
+            border-left: 4px solid var(--success);
         }
 
-        .risk-indicator.high {
-            background: var(--primary);
-            box-shadow: 0 0 10px var(--primary);
+        .risk-gauge {
+            width: 60px;
+            height: 60px;
+            position: relative;
         }
 
-        .risk-indicator.medium {
-            background: var(--warning);
-            box-shadow: 0 0 10px var(--warning);
+        .risk-gauge svg {
+            transform: rotate(-90deg);
         }
 
-        .risk-indicator.low {
-            background: var(--success);
+        .risk-gauge circle {
+            fill: none;
+            stroke-width: 6;
+        }
+
+        .risk-gauge .bg {
+            stroke: rgba(255, 255, 255, 0.1);
+        }
+
+        .risk-gauge .fill {
+            stroke-linecap: round;
+            transition: stroke-dashoffset 0.5s;
+        }
+
+        .risk-gauge .fill.high {
+            stroke: var(--primary);
+        }
+
+        .risk-gauge .fill.medium {
+            stroke: var(--warning);
+        }
+
+        .risk-gauge .fill.low {
+            stroke: var(--success);
+        }
+
+        .risk-score {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
         }
 
         .order-info {
@@ -195,6 +253,7 @@
 
         .order-id {
             font-weight: 600;
+            margin-bottom: 0.25rem;
         }
 
         .order-details {
@@ -202,54 +261,212 @@
             color: var(--text-muted);
         }
 
-        .risk-score {
-            font-weight: 700;
-            font-size: 1.25rem;
-        }
-
-        .risk-score.high {
-            color: var(--primary);
-        }
-
-        .risk-score.medium {
-            color: var(--warning);
-        }
-
-        .risk-score.low {
-            color: var(--success);
-        }
-
         .risk-factors {
             display: flex;
-            gap: 0.5rem;
             flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
         }
 
         .risk-tag {
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
             font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .risk-tag.high {
             background: rgba(239, 68, 68, 0.2);
             color: var(--primary);
         }
 
+        .risk-tag.medium {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
         .btn {
-            padding: 0.5rem 1rem;
+            padding: 0.6rem 1rem;
             border: none;
             border-radius: 8px;
             font-size: 0.85rem;
             font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .btn-approve {
+        .btn-success {
             background: var(--success);
             color: #fff;
         }
 
-        .btn-block {
+        .btn-danger {
             background: var(--primary);
             color: #fff;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .rule-builder {
+            margin-top: 1rem;
+        }
+
+        .rule-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+        }
+
+        .rule-status {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .rule-status.active {
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+        }
+
+        .rule-status.inactive {
+            background: var(--text-muted);
+        }
+
+        .rule-info {
+            flex: 1;
+        }
+
+        .rule-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .rule-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .rule-weight {
+            padding: 0.25rem 0.75rem;
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        .rule-toggle {
+            width: 44px;
+            height: 24px;
+            border-radius: 12px;
+            background: var(--text-muted);
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .rule-toggle.active {
+            background: var(--success);
+        }
+
+        .rule-toggle::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #fff;
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s;
+        }
+
+        .rule-toggle.active::after {
+            left: 23px;
+        }
+
+        .heatmap {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            margin-top: 1rem;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .heatmap-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 0.25rem;
+        }
+
+        .alert-config {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .alert-config h4 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .threshold-slider {
+            margin-top: 1rem;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--success), var(--warning), var(--primary));
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid var(--primary);
+            cursor: pointer;
         }
 
         footer {
@@ -258,14 +475,13 @@
             color: var(--text-muted);
         }
 
-        footer a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-
-        @media (max-width: 768px) {
-            .stats-grid {
+        @media (max-width: 1024px) {
+            .stats-row {
                 grid-template-columns: repeat(2, 1fr);
+            }
+
+            .main-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -273,73 +489,211 @@
 
 <body>
     <div class="bg-gradient"></div>
+
     <header>
         <div class="logo"><i class="fas fa-shield-alt"></i><span>FraudShield</span></div>
+        <div style="display: flex; gap: 1rem;">
+            <button class="btn btn-outline"><i class="fas fa-cog"></i> Rules</button>
+            <button class="btn btn-danger"><i class="fas fa-eye"></i> Review Queue</button>
+        </div>
     </header>
+
     <main class="container">
-        <section class="hero">
-            <h1>Order Fraud Detector</h1>
-            <p>Protect your store from fraudulent orders</p>
-        </section>
-        <div class="stats-grid">
+        <div class="stats-row">
             <div class="stat-card">
-                <div class="stat-value danger">23</div>
+                <div class="stat-header">
+                    <div class="stat-icon danger"><i class="fas fa-exclamation-triangle"></i></div>
+                </div>
+                <div class="stat-value" style="color: var(--primary);">23</div>
                 <div class="stat-label">High Risk Orders</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value warning">45</div>
+                <div class="stat-header">
+                    <div class="stat-icon warning"><i class="fas fa-question-circle"></i></div>
+                </div>
+                <div class="stat-value" style="color: var(--warning);">45</div>
                 <div class="stat-label">Medium Risk</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value success">892</div>
+                <div class="stat-header">
+                    <div class="stat-icon success"><i class="fas fa-check-circle"></i></div>
+                </div>
+                <div class="stat-value" style="color: var(--success);">892</div>
                 <div class="stat-label">Approved Orders</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">$15,230</div>
+                <div class="stat-header">
+                    <div class="stat-icon info"><i class="fas fa-dollar-sign"></i></div>
+                </div>
+                <div class="stat-value">$15.2K</div>
                 <div class="stat-label">Fraud Prevented</div>
             </div>
         </div>
-        <div class="card">
-            <h3><i class="fas fa-exclamation-triangle"></i> Flagged Orders</h3>
-            <div class="order-list">
-                <div class="order-item high-risk">
-                    <div class="risk-indicator high"></div>
-                    <div class="order-info">
-                        <div class="order-id">#1089 - John Smith</div>
-                        <div class="order-details">$459.99 • New customer • Gift card payment</div>
-                    </div>
-                    <div class="risk-factors"><span class="risk-tag">IP Mismatch</span><span class="risk-tag">Expedited
-                            Ship</span><span class="risk-tag">High Value</span></div>
-                    <div class="risk-score high">92</div>
-                    <button class="btn btn-block">Block</button>
+
+        <div class="main-grid">
+            <div>
+                <div class="card">
+                    <h3><i class="fas fa-chart-area"></i> Risk Distribution</h3>
+                    <div class="chart-container"><canvas id="riskChart"></canvas></div>
                 </div>
-                <div class="order-item high-risk">
-                    <div class="risk-indicator high"></div>
-                    <div class="order-info">
-                        <div class="order-id">#1088 - Alex Johnson</div>
-                        <div class="order-details">$299.00 • Different billing/shipping • First order</div>
+
+                <div class="card">
+                    <h3><i class="fas fa-exclamation-triangle"></i> Flagged Orders</h3>
+                    <div class="order-list">
+                        <div class="order-item high-risk">
+                            <div class="risk-gauge"><svg viewBox="0 0 36 36">
+                                    <circle class="bg" cx="18" cy="18" r="15" />
+                                    <circle class="fill high" cx="18" cy="18" r="15" stroke-dasharray="94"
+                                        stroke-dashoffset="7.5" />
+                                </svg><span class="risk-score">92</span></div>
+                            <div class="order-info">
+                                <div class="order-id">#1089 - John Smith</div>
+                                <div class="order-details">$459.99 • New customer • Gift card</div>
+                                <div class="risk-factors"><span class="risk-tag high">IP Mismatch</span><span
+                                        class="risk-tag high">Expedited</span><span class="risk-tag medium">High
+                                        Value</span></div>
+                            </div>
+                            <div class="order-actions"><button class="btn btn-success"><i
+                                        class="fas fa-check"></i></button><button class="btn btn-danger"><i
+                                        class="fas fa-ban"></i></button></div>
+                        </div>
+                        <div class="order-item high-risk">
+                            <div class="risk-gauge"><svg viewBox="0 0 36 36">
+                                    <circle class="bg" cx="18" cy="18" r="15" />
+                                    <circle class="fill high" cx="18" cy="18" r="15" stroke-dasharray="94"
+                                        stroke-dashoffset="14" />
+                                </svg><span class="risk-score">85</span></div>
+                            <div class="order-info">
+                                <div class="order-id">#1088 - Alex Johnson</div>
+                                <div class="order-details">$299.00 • Different billing/shipping</div>
+                                <div class="risk-factors"><span class="risk-tag high">Address Mismatch</span><span
+                                        class="risk-tag medium">New Customer</span></div>
+                            </div>
+                            <div class="order-actions"><button class="btn btn-success"><i
+                                        class="fas fa-check"></i></button><button class="btn btn-danger"><i
+                                        class="fas fa-ban"></i></button></div>
+                        </div>
+                        <div class="order-item medium-risk">
+                            <div class="risk-gauge"><svg viewBox="0 0 36 36">
+                                    <circle class="bg" cx="18" cy="18" r="15" />
+                                    <circle class="fill medium" cx="18" cy="18" r="15" stroke-dasharray="94"
+                                        stroke-dashoffset="39" />
+                                </svg><span class="risk-score">58</span></div>
+                            <div class="order-info">
+                                <div class="order-id">#1087 - Sarah Wilson</div>
+                                <div class="order-details">$128.50 • Multiple orders today</div>
+                                <div class="risk-factors"><span class="risk-tag medium">Velocity</span></div>
+                            </div>
+                            <div class="order-actions"><button class="btn btn-success"><i
+                                        class="fas fa-check"></i></button><button class="btn btn-outline"><i
+                                        class="fas fa-eye"></i></button></div>
+                        </div>
                     </div>
-                    <div class="risk-factors"><span class="risk-tag">Address Mismatch</span><span class="risk-tag">New
-                            Customer</span></div>
-                    <div class="risk-score high">85</div>
-                    <button class="btn btn-block">Block</button>
                 </div>
-                <div class="order-item medium-risk">
-                    <div class="risk-indicator medium"></div>
-                    <div class="order-info">
-                        <div class="order-id">#1087 - Sarah Wilson</div>
-                        <div class="order-details">$128.50 • Multiple orders today</div>
+            </div>
+
+            <div>
+                <div class="card">
+                    <h3><i class="fas fa-sliders-h"></i> Detection Rules</h3>
+                    <div class="rule-builder">
+                        <div class="rule-item">
+                            <div class="rule-status active"></div>
+                            <div class="rule-info">
+                                <div class="rule-name">IP Geolocation Mismatch</div>
+                                <div class="rule-desc">Billing country ≠ IP country</div>
+                            </div>
+                            <div class="rule-weight">+35</div>
+                            <div class="rule-toggle active" onclick="this.classList.toggle('active')"></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-status active"></div>
+                            <div class="rule-info">
+                                <div class="rule-name">Address Mismatch</div>
+                                <div class="rule-desc">Billing ≠ Shipping address</div>
+                            </div>
+                            <div class="rule-weight">+25</div>
+                            <div class="rule-toggle active" onclick="this.classList.toggle('active')"></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-status active"></div>
+                            <div class="rule-info">
+                                <div class="rule-name">High Value First Order</div>
+                                <div class="rule-desc">New customer, order > $200</div>
+                            </div>
+                            <div class="rule-weight">+20</div>
+                            <div class="rule-toggle active" onclick="this.classList.toggle('active')"></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-status inactive"></div>
+                            <div class="rule-info">
+                                <div class="rule-name">Expedited Shipping</div>
+                                <div class="rule-desc">Rush delivery selected</div>
+                            </div>
+                            <div class="rule-weight">+15</div>
+                            <div class="rule-toggle" onclick="this.classList.toggle('active')"></div>
+                        </div>
+                        <div class="rule-item">
+                            <div class="rule-status active"></div>
+                            <div class="rule-info">
+                                <div class="rule-name">Multiple Orders (Velocity)</div>
+                                <div class="rule-desc">> 3 orders in 24 hours</div>
+                            </div>
+                            <div class="rule-weight">+30</div>
+                            <div class="rule-toggle active" onclick="this.classList.toggle('active')"></div>
+                        </div>
                     </div>
-                    <div class="risk-factors"><span class="risk-tag">Velocity</span></div>
-                    <div class="risk-score medium">58</div>
-                    <button class="btn btn-approve">Approve</button>
+                    <button class="btn btn-outline" style="width: 100%; margin-top: 1rem;"><i class="fas fa-plus"></i>
+                        Add Custom Rule</button>
+
+                    <div class="alert-config">
+                        <h4>Risk Threshold</h4>
+                        <div class="threshold-slider">
+                            <div class="slider-labels"><span>Low (30)</span><span>Medium (60)</span><span>High
+                                    (80)</span></div>
+                            <input type="range" min="0" max="100" value="60">
+                        </div>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.75rem;">Orders above
+                            threshold will be flagged for review</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-fire"></i> Fraud Heatmap (Weekly)</h3>
+                    <div class="heatmap">
+                        <div class="heatmap-label">Mon</div>
+                        <div class="heatmap-label">Tue</div>
+                        <div class="heatmap-label">Wed</div>
+                        <div class="heatmap-label">Thu</div>
+                        <div class="heatmap-label">Fri</div>
+                        <div class="heatmap-label">Sat</div>
+                        <div class="heatmap-label">Sun</div>
+                        <div class="heatmap-cell" style="background: rgba(239,68,68,0.2);">2</div>
+                        <div class="heatmap-cell" style="background: rgba(239,68,68,0.4);">5</div>
+                        <div class="heatmap-cell" style="background: rgba(239,68,68,0.3);">3</div>
+                        <div class="heatmap-cell" style="background: rgba(239,68,68,0.6);">8</div>
+                        <div class="heatmap-cell" style="background: rgba(239,68,68,0.8);">12</div>
+                        <div class="heatmap-cell" style="background: rgba(239,68,68,0.5);">6</div>
+                        <div class="heatmap-cell" style="background: rgba(239,68,68,0.2);">2</div>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
+
     <footer>
         <p>Part of the <a href="#">ShopifyHero Tools</a> suite</p>
     </footer>
+
+    <script>
+        new Chart(document.getElementById('riskChart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['High Risk', 'Medium Risk', 'Low Risk', 'Approved'],
+                datasets: [{ data: [23, 45, 120, 892], backgroundColor: ['#ef4444', '#f59e0b', '#8b5cf6', '#10b981'], borderWidth: 0 }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#94a3b8', padding: 15, usePointStyle: true } } }, cutout: '65%' }
+        });
+    </script>
 </body>
 
 </html>
