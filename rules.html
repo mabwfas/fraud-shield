@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rules - FraudShield</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="api.js"></script>
+    <style>
+        :root {
+            --primary: #ef4444;
+            --bg: #0f0f23;
+            --card: rgba(255, 255, 255, 0.05);
+            --text: #fff;
+            --muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+            --success: #10b981;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 250px;
+            background: rgba(15, 15, 35, 0.95);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            color: var(--primary);
+        }
+
+        .nav-link {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: var(--muted);
+            text-decoration: none;
+            border-radius: 8px;
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-link:hover {
+            background: var(--card);
+        }
+
+        .nav-link.active {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--primary);
+        }
+
+        .main {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.8rem;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .rule-card {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s;
+        }
+
+        .rule-card:hover {
+            border-color: var(--primary);
+        }
+
+        .rule-card.disabled {
+            opacity: 0.5;
+        }
+
+        .rule-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .rule-info {
+            flex: 1;
+        }
+
+        .rule-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .rule-desc {
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+        }
+
+        .rule-weight {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rule-weight input {
+            width: 70px;
+            padding: 0.4rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--card);
+            color: var(--text);
+            text-align: center;
+        }
+
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle input {
+            display: none;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: var(--border);
+            border-radius: 13px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            left: 3px;
+            top: 3px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .toggle input:checked+.toggle-slider {
+            background: var(--success);
+        }
+
+        .toggle input:checked+.toggle-slider::before {
+            left: 27px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="sidebar">
+        <div class="logo"><i class="fas fa-shield-alt"></i> FraudShield</div>
+        <a href="index.html" class="nav-link"><i class="fas fa-search"></i> Orders</a>
+        <a href="rules.html" class="nav-link active"><i class="fas fa-sliders-h"></i> Rules</a>
+        <a href="reports.html" class="nav-link"><i class="fas fa-chart-bar"></i> Reports</a>
+        <a href="settings.html" class="nav-link"><i class="fas fa-cog"></i> Settings</a>
+    </nav>
+
+    <main class="main">
+        <div class="header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1 class="title">Detection Rules</h1>
+                <p style="color: var(--muted); margin-top: 0.25rem;">Configure fraud detection rules and weights</p>
+            </div>
+            <button class="btn btn-outline" onclick="resetRules()"><i class="fas fa-undo"></i> Reset to
+                Defaults</button>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 1rem;"><i class="fas fa-brain" style="color: var(--primary);"></i> ML-Enhanced
+                Rules</h3>
+            <p style="color: var(--muted); margin-bottom: 1.5rem; font-size: 0.9rem;">Each rule contributes to the
+                overall risk score. Adjust weights based on your business needs.</p>
+            <div id="rulesList"></div>
+        </div>
+
+        <div class="card">
+            <h3 style="margin-bottom: 1rem;"><i class="fas fa-info-circle" style="color: var(--muted);"></i> How Scoring
+                Works</h3>
+            <ul style="color: var(--muted); font-size: 0.9rem; line-height: 1.8; padding-left: 1.5rem;">
+                <li><strong>0-39:</strong> Low Risk – Auto-approve recommended</li>
+                <li><strong>40-69:</strong> Medium Risk – Manual review suggested</li>
+                <li><strong>70+:</strong> High Risk – Block or investigate</li>
+            </ul>
+        </div>
+    </main>
+
+    <script>
+        function loadRules() {
+            const rules = ShieldAPI.rules.getAll();
+
+            document.getElementById('rulesList').innerHTML = rules.map(r => `
+                <div class="rule-card ${r.enabled ? '' : 'disabled'}">
+                    <div class="rule-icon"><i class="fas fa-${getIcon(r.id)}"></i></div>
+                    <div class="rule-info">
+                        <div class="rule-name">${r.name}</div>
+                        <div class="rule-desc">${r.description}</div>
+                    </div>
+                    <div class="rule-weight">
+                        <label style="color: var(--muted); font-size: 0.85rem;">Weight:</label>
+                        <input type="number" value="${r.weight}" min="0" max="100" onchange="updateWeight('${r.id}', this.value)">
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" ${r.enabled ? 'checked' : ''} onchange="toggleRule('${r.id}')">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            `).join('');
+        }
+
+        function getIcon(id) {
+            const icons = { new_customer: 'user-plus', high_amount: 'dollar-sign', email_mismatch: 'envelope', high_risk_country: 'globe', velocity: 'bolt', payment_mismatch: 'credit-card', proxy_vpn: 'mask' };
+            return icons[id] || 'exclamation-triangle';
+        }
+
+        function toggleRule(id) {
+            ShieldAPI.rules.toggle(id);
+            loadRules();
+            ShieldAPI.toast.show('Rule updated');
+        }
+
+        function updateWeight(id, weight) {
+            ShieldAPI.rules.updateWeight(id, parseInt(weight) || 0);
+            ShieldAPI.toast.show('Weight updated');
+        }
+
+        function resetRules() {
+            if (!confirm('Reset all rules to defaults?')) return;
+            ShieldAPI.storage.set('rules', null);
+            loadRules();
+            ShieldAPI.toast.show('Rules reset to defaults');
+        }
+
+        loadRules();
+    </script>
+</body>
+
+</html>
