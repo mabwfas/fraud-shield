@@ -39,7 +39,7 @@
         .bg-gradient {
             position: fixed;
             inset: 0;
-            background: radial-gradient(ellipse at 30% 30%, rgba(239, 68, 68, 0.1) 0%, transparent 50%);
+            background: radial-gradient(ellipse at 30% 20%, rgba(239, 68, 68, 0.1) 0%, transparent 50%);
             z-index: -1;
         }
 
@@ -71,76 +71,9 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
-        }
-
-        .stats-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 1.5rem;
-        }
-
-        .stat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-        }
-
-        .stat-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-        }
-
-        .stat-icon.danger {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--primary);
-        }
-
-        .stat-icon.warning {
-            background: rgba(245, 158, 11, 0.2);
-            color: var(--warning);
-        }
-
-        .stat-icon.success {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-        }
-
-        .stat-icon.info {
-            background: rgba(139, 92, 246, 0.2);
-            color: var(--secondary);
-        }
-
-        .stat-value {
-            font-size: 2.25rem;
-            font-weight: 800;
-        }
-
-        .stat-label {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1fr 380px;
-            gap: 2rem;
         }
 
         .card {
@@ -152,7 +85,7 @@
         }
 
         .card h3 {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -162,48 +95,93 @@
             color: var(--primary);
         }
 
-        .chart-container {
-            height: 200px;
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: #000;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
             margin-bottom: 1.5rem;
         }
 
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .chart-container {
+            height: 220px;
+        }
+
         .order-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            max-height: 500px;
+            overflow-y: auto;
         }
 
         .order-item {
             display: flex;
-            align-items: center;
             gap: 1rem;
-            padding: 1.25rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border);
-            border-radius: 14px;
-            transition: all 0.3s;
-        }
-
-        .order-item:hover {
-            border-color: var(--primary);
-        }
-
-        .order-item.high-risk {
-            border-left: 4px solid var(--primary);
-            background: rgba(239, 68, 68, 0.05);
-        }
-
-        .order-item.medium-risk {
-            border-left: 4px solid var(--warning);
-            background: rgba(245, 158, 11, 0.05);
-        }
-
-        .order-item.low-risk {
-            border-left: 4px solid var(--success);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
         }
 
         .risk-gauge {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             position: relative;
         }
 
@@ -213,7 +191,8 @@
 
         .risk-gauge circle {
             fill: none;
-            stroke-width: 6;
+            stroke-width: 4;
+            stroke-linecap: round;
         }
 
         .risk-gauge .bg {
@@ -221,30 +200,17 @@
         }
 
         .risk-gauge .fill {
-            stroke-linecap: round;
-            transition: stroke-dashoffset 0.5s;
+            transition: stroke-dasharray 0.5s;
         }
 
-        .risk-gauge .fill.high {
-            stroke: var(--primary);
-        }
-
-        .risk-gauge .fill.medium {
-            stroke: var(--warning);
-        }
-
-        .risk-gauge .fill.low {
-            stroke: var(--success);
-        }
-
-        .risk-score {
+        .risk-gauge .value {
             position: absolute;
             inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 800;
-            font-size: 1.1rem;
+            font-weight: 700;
+            font-size: 0.85rem;
         }
 
         .order-info {
@@ -256,7 +222,7 @@
             margin-bottom: 0.25rem;
         }
 
-        .order-details {
+        .order-meta {
             font-size: 0.85rem;
             color: var(--text-muted);
         }
@@ -264,218 +230,139 @@
         .risk-factors {
             display: flex;
             flex-wrap: wrap;
-            gap: 0.5rem;
+            gap: 0.4rem;
             margin-top: 0.5rem;
         }
 
         .risk-tag {
-            padding: 0.25rem 0.6rem;
-            border-radius: 6px;
+            padding: 0.2rem 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
             font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .risk-tag.high {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--primary);
-        }
-
-        .risk-tag.medium {
-            background: rgba(245, 158, 11, 0.2);
-            color: var(--warning);
+            color: var(--text-muted);
         }
 
         .order-actions {
             display: flex;
+            flex-direction: column;
             gap: 0.5rem;
         }
 
-        .btn {
-            padding: 0.6rem 1rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: #fff;
-        }
-
-        .btn-danger {
-            background: var(--primary);
-            color: #fff;
-        }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text);
-        }
-
-        .rule-builder {
-            margin-top: 1rem;
+        .rule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
         }
 
         .rule-item {
             display: flex;
             align-items: center;
-            gap: 1rem;
-            padding: 1rem;
+            justify-content: space-between;
+            padding: 0.75rem;
             background: rgba(255, 255, 255, 0.02);
-            border: 1px solid var(--border);
             border-radius: 10px;
-            margin-bottom: 0.75rem;
-        }
-
-        .rule-status {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-
-        .rule-status.active {
-            background: var(--success);
-            box-shadow: 0 0 10px var(--success);
-        }
-
-        .rule-status.inactive {
-            background: var(--text-muted);
-        }
-
-        .rule-info {
-            flex: 1;
         }
 
         .rule-name {
-            font-weight: 500;
             font-size: 0.9rem;
         }
 
-        .rule-desc {
-            font-size: 0.8rem;
-            color: var(--text-muted);
+        .rule-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .rule-weight {
-            padding: 0.25rem 0.75rem;
-            background: rgba(139, 92, 246, 0.2);
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--secondary);
-            font-weight: 600;
-        }
-
-        .rule-toggle {
+        .toggle {
             width: 44px;
             height: 24px;
+            background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            background: var(--text-muted);
             position: relative;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: background 0.3s;
         }
 
-        .rule-toggle.active {
+        .toggle.active {
             background: var(--success);
         }
 
-        .rule-toggle::after {
+        .toggle::after {
             content: '';
             position: absolute;
             width: 18px;
             height: 18px;
-            border-radius: 50%;
             background: #fff;
+            border-radius: 50%;
             top: 3px;
             left: 3px;
-            transition: all 0.3s;
+            transition: left 0.3s;
         }
 
-        .rule-toggle.active::after {
+        .toggle.active::after {
             left: 23px;
         }
 
-        .heatmap {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
-            margin-top: 1rem;
+        .weight-input {
+            width: 60px;
+            padding: 0.4rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text);
         }
 
-        .heatmap-cell {
-            aspect-ratio: 1;
-            border-radius: 4px;
-            display: flex;
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
             align-items: center;
             justify-content: center;
-            font-size: 0.7rem;
-            font-weight: 600;
+            z-index: 1000;
         }
 
-        .heatmap-label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-align: center;
-            padding: 0.25rem;
+        .modal.active {
+            display: flex;
         }
 
-        .alert-config {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
+        .modal-content {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
         }
 
-        .alert-config h4 {
-            font-size: 0.9rem;
-            color: var(--text-muted);
+        .form-group {
             margin-bottom: 1rem;
         }
 
-        .threshold-slider {
-            margin-top: 1rem;
-        }
-
-        .slider-labels {
-            display: flex;
-            justify-content: space-between;
+        .form-group label {
+            display: block;
             margin-bottom: 0.5rem;
-            font-size: 0.8rem;
             color: var(--text-muted);
         }
 
-        input[type="range"] {
+        .form-group input,
+        .form-group select {
             width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: linear-gradient(90deg, var(--success), var(--warning), var(--primary));
-            appearance: none;
-            cursor: pointer;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #fff;
-            border: 3px solid var(--primary);
-            cursor: pointer;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text);
         }
 
         footer {
             text-align: center;
-            padding: 3rem;
+            padding: 2rem;
             color: var(--text-muted);
         }
 
-        @media (max-width: 1024px) {
+        @media (max-width: 900px) {
             .stats-row {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -489,210 +376,278 @@
 
 <body>
     <div class="bg-gradient"></div>
-
     <header>
-        <div class="logo"><i class="fas fa-shield-alt"></i><span>FraudShield</span></div>
+        <div class="logo"><i class="fas fa-shield-halved"></i><span>FraudShield</span></div>
         <div style="display: flex; gap: 1rem;">
-            <button class="btn btn-outline"><i class="fas fa-cog"></i> Rules</button>
-            <button class="btn btn-danger"><i class="fas fa-eye"></i> Review Queue</button>
+            <button class="btn btn-outline" onclick="exportOrders()"><i class="fas fa-download"></i> Export</button>
+            <button class="btn btn-primary" onclick="showAddModal()"><i class="fas fa-plus"></i> Check Order</button>
         </div>
     </header>
 
     <main class="container">
         <div class="stats-row">
             <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-icon danger"><i class="fas fa-exclamation-triangle"></i></div>
-                </div>
-                <div class="stat-value" style="color: var(--primary);">23</div>
-                <div class="stat-label">High Risk Orders</div>
+                <div class="stat-value" id="totalOrders">0</div>
+                <div class="stat-label">Orders Analyzed</div>
             </div>
             <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-icon warning"><i class="fas fa-question-circle"></i></div>
-                </div>
-                <div class="stat-value" style="color: var(--warning);">45</div>
+                <div class="stat-value" style="color: var(--primary);" id="highRisk">0</div>
+                <div class="stat-label">High Risk</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" style="color: var(--warning);" id="mediumRisk">0</div>
                 <div class="stat-label">Medium Risk</div>
             </div>
             <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-icon success"><i class="fas fa-check-circle"></i></div>
-                </div>
-                <div class="stat-value" style="color: var(--success);">892</div>
-                <div class="stat-label">Approved Orders</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-header">
-                    <div class="stat-icon info"><i class="fas fa-dollar-sign"></i></div>
-                </div>
-                <div class="stat-value">$15.2K</div>
-                <div class="stat-label">Fraud Prevented</div>
+                <div class="stat-value" style="color: var(--success);" id="lowRisk">0</div>
+                <div class="stat-label">Low Risk</div>
             </div>
         </div>
 
         <div class="main-grid">
-            <div>
-                <div class="card">
-                    <h3><i class="fas fa-chart-area"></i> Risk Distribution</h3>
-                    <div class="chart-container"><canvas id="riskChart"></canvas></div>
-                </div>
-
-                <div class="card">
-                    <h3><i class="fas fa-exclamation-triangle"></i> Flagged Orders</h3>
-                    <div class="order-list">
-                        <div class="order-item high-risk">
-                            <div class="risk-gauge"><svg viewBox="0 0 36 36">
-                                    <circle class="bg" cx="18" cy="18" r="15" />
-                                    <circle class="fill high" cx="18" cy="18" r="15" stroke-dasharray="94"
-                                        stroke-dashoffset="7.5" />
-                                </svg><span class="risk-score">92</span></div>
-                            <div class="order-info">
-                                <div class="order-id">#1089 - John Smith</div>
-                                <div class="order-details">$459.99 • New customer • Gift card</div>
-                                <div class="risk-factors"><span class="risk-tag high">IP Mismatch</span><span
-                                        class="risk-tag high">Expedited</span><span class="risk-tag medium">High
-                                        Value</span></div>
-                            </div>
-                            <div class="order-actions"><button class="btn btn-success"><i
-                                        class="fas fa-check"></i></button><button class="btn btn-danger"><i
-                                        class="fas fa-ban"></i></button></div>
-                        </div>
-                        <div class="order-item high-risk">
-                            <div class="risk-gauge"><svg viewBox="0 0 36 36">
-                                    <circle class="bg" cx="18" cy="18" r="15" />
-                                    <circle class="fill high" cx="18" cy="18" r="15" stroke-dasharray="94"
-                                        stroke-dashoffset="14" />
-                                </svg><span class="risk-score">85</span></div>
-                            <div class="order-info">
-                                <div class="order-id">#1088 - Alex Johnson</div>
-                                <div class="order-details">$299.00 • Different billing/shipping</div>
-                                <div class="risk-factors"><span class="risk-tag high">Address Mismatch</span><span
-                                        class="risk-tag medium">New Customer</span></div>
-                            </div>
-                            <div class="order-actions"><button class="btn btn-success"><i
-                                        class="fas fa-check"></i></button><button class="btn btn-danger"><i
-                                        class="fas fa-ban"></i></button></div>
-                        </div>
-                        <div class="order-item medium-risk">
-                            <div class="risk-gauge"><svg viewBox="0 0 36 36">
-                                    <circle class="bg" cx="18" cy="18" r="15" />
-                                    <circle class="fill medium" cx="18" cy="18" r="15" stroke-dasharray="94"
-                                        stroke-dashoffset="39" />
-                                </svg><span class="risk-score">58</span></div>
-                            <div class="order-info">
-                                <div class="order-id">#1087 - Sarah Wilson</div>
-                                <div class="order-details">$128.50 • Multiple orders today</div>
-                                <div class="risk-factors"><span class="risk-tag medium">Velocity</span></div>
-                            </div>
-                            <div class="order-actions"><button class="btn btn-success"><i
-                                        class="fas fa-check"></i></button><button class="btn btn-outline"><i
-                                        class="fas fa-eye"></i></button></div>
-                        </div>
-                    </div>
-                </div>
+            <div class="card">
+                <h3><i class="fas fa-chart-pie"></i> Risk Distribution</h3>
+                <div class="chart-container"><canvas id="riskChart"></canvas></div>
             </div>
-
-            <div>
-                <div class="card">
-                    <h3><i class="fas fa-sliders-h"></i> Detection Rules</h3>
-                    <div class="rule-builder">
-                        <div class="rule-item">
-                            <div class="rule-status active"></div>
-                            <div class="rule-info">
-                                <div class="rule-name">IP Geolocation Mismatch</div>
-                                <div class="rule-desc">Billing country ≠ IP country</div>
-                            </div>
-                            <div class="rule-weight">+35</div>
-                            <div class="rule-toggle active" onclick="this.classList.toggle('active')"></div>
-                        </div>
-                        <div class="rule-item">
-                            <div class="rule-status active"></div>
-                            <div class="rule-info">
-                                <div class="rule-name">Address Mismatch</div>
-                                <div class="rule-desc">Billing ≠ Shipping address</div>
-                            </div>
-                            <div class="rule-weight">+25</div>
-                            <div class="rule-toggle active" onclick="this.classList.toggle('active')"></div>
-                        </div>
-                        <div class="rule-item">
-                            <div class="rule-status active"></div>
-                            <div class="rule-info">
-                                <div class="rule-name">High Value First Order</div>
-                                <div class="rule-desc">New customer, order > $200</div>
-                            </div>
-                            <div class="rule-weight">+20</div>
-                            <div class="rule-toggle active" onclick="this.classList.toggle('active')"></div>
-                        </div>
-                        <div class="rule-item">
-                            <div class="rule-status inactive"></div>
-                            <div class="rule-info">
-                                <div class="rule-name">Expedited Shipping</div>
-                                <div class="rule-desc">Rush delivery selected</div>
-                            </div>
-                            <div class="rule-weight">+15</div>
-                            <div class="rule-toggle" onclick="this.classList.toggle('active')"></div>
-                        </div>
-                        <div class="rule-item">
-                            <div class="rule-status active"></div>
-                            <div class="rule-info">
-                                <div class="rule-name">Multiple Orders (Velocity)</div>
-                                <div class="rule-desc">> 3 orders in 24 hours</div>
-                            </div>
-                            <div class="rule-weight">+30</div>
-                            <div class="rule-toggle active" onclick="this.classList.toggle('active')"></div>
-                        </div>
-                    </div>
-                    <button class="btn btn-outline" style="width: 100%; margin-top: 1rem;"><i class="fas fa-plus"></i>
-                        Add Custom Rule</button>
-
-                    <div class="alert-config">
-                        <h4>Risk Threshold</h4>
-                        <div class="threshold-slider">
-                            <div class="slider-labels"><span>Low (30)</span><span>Medium (60)</span><span>High
-                                    (80)</span></div>
-                            <input type="range" min="0" max="100" value="60">
-                        </div>
-                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.75rem;">Orders above
-                            threshold will be flagged for review</p>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3><i class="fas fa-fire"></i> Fraud Heatmap (Weekly)</h3>
-                    <div class="heatmap">
-                        <div class="heatmap-label">Mon</div>
-                        <div class="heatmap-label">Tue</div>
-                        <div class="heatmap-label">Wed</div>
-                        <div class="heatmap-label">Thu</div>
-                        <div class="heatmap-label">Fri</div>
-                        <div class="heatmap-label">Sat</div>
-                        <div class="heatmap-label">Sun</div>
-                        <div class="heatmap-cell" style="background: rgba(239,68,68,0.2);">2</div>
-                        <div class="heatmap-cell" style="background: rgba(239,68,68,0.4);">5</div>
-                        <div class="heatmap-cell" style="background: rgba(239,68,68,0.3);">3</div>
-                        <div class="heatmap-cell" style="background: rgba(239,68,68,0.6);">8</div>
-                        <div class="heatmap-cell" style="background: rgba(239,68,68,0.8);">12</div>
-                        <div class="heatmap-cell" style="background: rgba(239,68,68,0.5);">6</div>
-                        <div class="heatmap-cell" style="background: rgba(239,68,68,0.2);">2</div>
-                    </div>
-                </div>
+            <div class="card">
+                <h3><i class="fas fa-cog"></i> Detection Rules</h3>
+                <div class="rule-list" id="ruleList"></div>
             </div>
+        </div>
+
+        <div class="card">
+            <h3><i class="fas fa-list"></i> Analyzed Orders</h3>
+            <div class="order-list" id="orderList"></div>
         </div>
     </main>
 
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 1.5rem;">Analyze Order</h3>
+            <div class="form-group"><label>Order ID</label><input type="text" id="orderId" placeholder="#12345"></div>
+            <div class="form-group"><label>Customer Email</label><input type="email" id="customerEmail"></div>
+            <div class="form-group"><label>Order Amount ($)</label><input type="number" id="orderAmount" step="0.01">
+            </div>
+            <div class="form-group"><label>Shipping Country</label><input type="text" id="shippingCountry"
+                    placeholder="US, UK, etc."></div>
+            <div class="form-group"><label>Payment Method</label><select id="paymentMethod">
+                    <option value="credit_card">Credit Card</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="crypto">Cryptocurrency</option>
+                    <option value="wire">Wire Transfer</option>
+                </select></div>
+            <div class="form-group"><label>Is New Customer?</label><select id="isNewCustomer">
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select></div>
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                <button class="btn btn-primary" onclick="analyzeOrder()" style="flex: 1;"><i
+                        class="fas fa-shield-halved"></i> Analyze</button>
+                <button class="btn btn-outline" onclick="hideAddModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <footer>
-        <p>Part of the <a href="#">ShopifyHero Tools</a> suite</p>
+        <p>FraudShield - Protect your business from fraud</p>
     </footer>
 
     <script>
-        new Chart(document.getElementById('riskChart'), {
-            type: 'doughnut',
-            data: {
-                labels: ['High Risk', 'Medium Risk', 'Low Risk', 'Approved'],
-                datasets: [{ data: [23, 45, 120, 892], backgroundColor: ['#ef4444', '#f59e0b', '#8b5cf6', '#10b981'], borderWidth: 0 }]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#94a3b8', padding: 15, usePointStyle: true } } }, cutout: '65%' }
-        });
+        let orders = JSON.parse(localStorage.getItem('fraudShieldOrders') || '[]');
+        let rules = JSON.parse(localStorage.getItem('fraudShieldRules') || 'null') || [
+            { id: 'high_value', name: 'High Value Order (>$500)', enabled: true, weight: 30 },
+            { id: 'new_customer', name: 'New Customer', enabled: true, weight: 20 },
+            { id: 'high_risk_country', name: 'High Risk Country', enabled: true, weight: 25 },
+            { id: 'crypto_payment', name: 'Cryptocurrency Payment', enabled: true, weight: 15 },
+            { id: 'rush_shipping', name: 'Rush Shipping', enabled: false, weight: 10 },
+            { id: 'mismatched_address', name: 'Mismatched Billing/Shipping', enabled: true, weight: 35 }
+        ];
+        let riskChart;
+
+        const highRiskCountries = ['NG', 'RU', 'CN', 'ID', 'VN'];
+
+        function generateRiskGauge(score, size = 50) {
+            const radius = (size - 8) / 2;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (score / 100) * circumference;
+            const color = score >= 70 ? '#ef4444' : score >= 40 ? '#f59e0b' : '#10b981';
+
+            return `
+                <div class="risk-gauge" style="width:${size}px;height:${size}px;">
+                    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+                        <circle class="bg" cx="${size / 2}" cy="${size / 2}" r="${radius}"/>
+                        <circle class="fill" style="stroke:${color};stroke-dasharray:${circumference};stroke-dashoffset:${offset};" cx="${size / 2}" cy="${size / 2}" r="${radius}"/>
+                    </svg>
+                    <span class="value" style="color:${color};">${score}</span>
+                </div>
+            `;
+        }
+
+        function renderOrders() {
+            const list = document.getElementById('orderList');
+
+            if (orders.length === 0) {
+                list.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 3rem;">No orders analyzed yet. Add an order to check for fraud!</div>';
+            } else {
+                list.innerHTML = orders.map((o, i) => {
+                    const riskLevel = o.score >= 70 ? 'High' : o.score >= 40 ? 'Medium' : 'Low';
+                    return `
+                        <div class="order-item">
+                            ${generateRiskGauge(o.score)}
+                            <div class="order-info">
+                                <div class="order-id">${o.id} • $${o.amount.toFixed(2)}</div>
+                                <div class="order-meta">${o.email} • ${o.country} • ${riskLevel} Risk</div>
+                                <div class="risk-factors">
+                                    ${o.factors.map(f => `<span class="risk-tag">${f}</span>`).join('')}
+                                </div>
+                            </div>
+                            <div class="order-actions">
+                                ${o.status === 'pending' ? `
+                                    <button class="btn btn-success btn-sm" onclick="markOrder(${i}, 'approved')"><i class="fas fa-check"></i></button>
+                                    <button class="btn btn-primary btn-sm" onclick="markOrder(${i}, 'blocked')"><i class="fas fa-ban"></i></button>
+                                ` : `<span style="font-size: 0.8rem; color: ${o.status === 'approved' ? 'var(--success)' : 'var(--primary)'}">${o.status.toUpperCase()}</span>`}
+                                <button class="btn btn-outline btn-sm" onclick="deleteOrder(${i})"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            updateStats();
+            updateChart();
+        }
+
+        function renderRules() {
+            const list = document.getElementById('ruleList');
+            list.innerHTML = rules.map((r, i) => `
+                <div class="rule-item">
+                    <span class="rule-name">${r.name}</span>
+                    <div class="rule-controls">
+                        <input type="number" class="weight-input" value="${r.weight}" onchange="updateRuleWeight(${i}, this.value)" min="0" max="100">
+                        <div class="toggle ${r.enabled ? 'active' : ''}" onclick="toggleRule(${i})"></div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            document.getElementById('totalOrders').textContent = orders.length;
+            document.getElementById('highRisk').textContent = orders.filter(o => o.score >= 70).length;
+            document.getElementById('mediumRisk').textContent = orders.filter(o => o.score >= 40 && o.score < 70).length;
+            document.getElementById('lowRisk').textContent = orders.filter(o => o.score < 40).length;
+        }
+
+        function updateChart() {
+            const ctx = document.getElementById('riskChart').getContext('2d');
+            if (riskChart) riskChart.destroy();
+
+            riskChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['High Risk', 'Medium Risk', 'Low Risk'],
+                    datasets: [{ data: [orders.filter(o => o.score >= 70).length, orders.filter(o => o.score >= 40 && o.score < 70).length, orders.filter(o => o.score < 40).length], backgroundColor: ['#ef4444', '#f59e0b', '#10b981'], borderWidth: 0 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: { color: '#94a3b8' } } }, cutout: '60%' }
+            });
+        }
+
+        function showAddModal() { document.getElementById('addModal').classList.add('active'); }
+        function hideAddModal() { document.getElementById('addModal').classList.remove('active'); }
+
+        function analyzeOrder() {
+            const id = document.getElementById('orderId').value.trim() || '#' + Math.random().toString(36).substr(2, 6).toUpperCase();
+            const email = document.getElementById('customerEmail').value.trim();
+            const amount = parseFloat(document.getElementById('orderAmount').value) || 0;
+            const country = document.getElementById('shippingCountry').value.trim().toUpperCase();
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const isNewCustomer = document.getElementById('isNewCustomer').value === 'true';
+
+            if (!email) { alert('Please enter customer email'); return; }
+
+            // Calculate risk score
+            let score = 0;
+            const factors = [];
+
+            rules.forEach(rule => {
+                if (!rule.enabled) return;
+
+                switch (rule.id) {
+                    case 'high_value':
+                        if (amount > 500) { score += rule.weight; factors.push('High Value'); }
+                        break;
+                    case 'new_customer':
+                        if (isNewCustomer) { score += rule.weight; factors.push('New Customer'); }
+                        break;
+                    case 'high_risk_country':
+                        if (highRiskCountries.includes(country)) { score += rule.weight; factors.push('High Risk Country'); }
+                        break;
+                    case 'crypto_payment':
+                        if (paymentMethod === 'crypto') { score += rule.weight; factors.push('Crypto Payment'); }
+                        break;
+                }
+            });
+
+            score = Math.min(100, score);
+
+            orders.unshift({ id, email, amount, country, paymentMethod, isNewCustomer, score, factors, status: 'pending', date: new Date().toISOString() });
+            saveData();
+            hideAddModal();
+            renderOrders();
+
+            // Clear form
+            ['orderId', 'customerEmail', 'orderAmount', 'shippingCountry'].forEach(id => document.getElementById(id).value = '');
+        }
+
+        function markOrder(index, status) {
+            orders[index].status = status;
+            saveData();
+            renderOrders();
+        }
+
+        function deleteOrder(index) {
+            if (!confirm('Delete this order?')) return;
+            orders.splice(index, 1);
+            saveData();
+            renderOrders();
+        }
+
+        function toggleRule(index) {
+            rules[index].enabled = !rules[index].enabled;
+            saveData();
+            renderRules();
+        }
+
+        function updateRuleWeight(index, weight) {
+            rules[index].weight = parseInt(weight) || 0;
+            saveData();
+        }
+
+        function saveData() {
+            localStorage.setItem('fraudShieldOrders', JSON.stringify(orders));
+            localStorage.setItem('fraudShieldRules', JSON.stringify(rules));
+        }
+
+        function exportOrders() {
+            const csv = [['Order ID', 'Email', 'Amount', 'Country', 'Score', 'Status', 'Factors'], ...orders.map(o => [o.id, o.email, o.amount, o.country, o.score, o.status, o.factors.join(';')])].map(r => r.join(',')).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'fraud-analysis.csv';
+            a.click();
+        }
+
+        // Sample data
+        if (orders.length === 0) {
+            orders = [
+                { id: '#A1B2C3', email: 'john@email.com', amount: 650, country: 'US', score: 50, factors: ['High Value', 'New Customer'], status: 'pending' },
+                { id: '#D4E5F6', email: 'test@fake.com', amount: 1200, country: 'NG', score: 85, factors: ['High Value', 'High Risk Country', 'New Customer'], status: 'blocked' },
+                { id: '#G7H8I9', email: 'sarah@valid.com', amount: 89.99, country: 'UK', score: 15, factors: [], status: 'approved' }
+            ];
+            saveData();
+        }
+
+        renderOrders();
+        renderRules();
     </script>
 </body>
 
